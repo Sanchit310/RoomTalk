@@ -147,7 +147,16 @@ public class RoomChatActivity extends AppCompatActivity {
         });
     }
 
-//    public List<Msg> pop(){
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        InitialData data = new InitialData(username, roomname);
+        String jsonData = gson.toJson(data);
+        socket.emit("unsubscribe", jsonData);
+        socket.disconnect();
+    }
+
+    //    public List<Msg> pop(){
 //
 //        messageList.add(new Msg(null, "Sanchit", "hello",0));
 //        messageList.add(new Msg(null, "Sanchit", "hello",1));
