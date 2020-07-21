@@ -1,6 +1,7 @@
 package example.android.roomtalk;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.cardview.widget.CardView;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 import example.android.roomtalk.model.InitialData;
@@ -12,6 +13,7 @@ import android.util.Log;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.ImageView;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.github.nkzawa.emitter.Emitter;
@@ -36,7 +38,7 @@ public class RoomChatActivity extends AppCompatActivity {
     List<Message> messageList = new ArrayList<>();
     ChatAdapter chatAdapter;
     EditText contentText;
-    ImageView sendButton;
+    TextView sendButton;
 
 
     @Override
