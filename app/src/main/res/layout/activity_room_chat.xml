@@ -74,7 +74,7 @@
             android:background="@drawable/chat_edittext"
             android:ems="10"
             android:textColor="#f1ffff"
-            android:hint="Enter your message"
+            android:hint="Type a message"
             android:textColorHint="#5A6D75"
             android:inputType="text"
             android:paddingStart="15dp"

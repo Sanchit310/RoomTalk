@@ -86,7 +86,7 @@ public class RoomChatActivity extends AppCompatActivity {
         @Override
         public void call(Object... args) {
             String leftUserName =  args[0].toString();
-            Message chat =  new Message(leftUserName, "", "", USER_LEAVE);
+            Message chat =  new Message(leftUserName + " left", "", "", USER_LEAVE);
             addToRecyclerView(chat);
         }
     };
@@ -117,7 +117,7 @@ public class RoomChatActivity extends AppCompatActivity {
         public void call(Object... args) {
             String name = args[0].toString();
             Log.d("___", "call: name" + name);
-            Message chat = new Message(name, roomName, "", USER_JOIN);
+            Message chat = new Message(name + " joined", roomName, "", USER_JOIN);
             addToRecyclerView(chat);
         }
     };

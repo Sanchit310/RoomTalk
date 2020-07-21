@@ -10,6 +10,7 @@
         android:layout_height="wrap_content"
         android:gravity="center_horizontal"
         android:text="Joyce has entered the room"
+        android:textColor="#f1ffff"
         android:layout_marginTop="10dp"
         android:layout_marginBottom="10dp"/>
 
