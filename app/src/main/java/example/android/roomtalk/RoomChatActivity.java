@@ -5,7 +5,6 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 import example.android.roomtalk.model.InitialData;
 import example.android.roomtalk.model.Message;
-import example.android.roomtalk.model.Msg;
 import example.android.roomtalk.model.SendMessage;
 
 import android.os.Bundle;
@@ -22,10 +21,7 @@ import com.google.gson.Gson;
 
 import java.net.URISyntaxException;
 import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.LinkedHashMap;
 import java.util.List;
-import java.util.Map;
 
 public class RoomChatActivity extends AppCompatActivity {
     public static final int CHAT_MINE = 0;
@@ -34,7 +30,7 @@ public class RoomChatActivity extends AppCompatActivity {
     public static final int  USER_LEAVE = 3;
 
     Socket socket;
-    String username, roomname;
+    String userName, roomName;
     Gson gson = new Gson();
     RecyclerView recyclerView;
     List<Message> messageList = new ArrayList<>();
@@ -64,9 +60,9 @@ public class RoomChatActivity extends AppCompatActivity {
         recyclerView.setAdapter(chatAdapter);
 
 
-        username = getIntent().getStringExtra("userName");
-        roomname = getIntent().getStringExtra("roomName");
-        Log.d("___", "onCreate: " + username + " " + roomname);
+        userName = getIntent().getStringExtra("userName");
+        roomName = getIntent().getStringExtra("roomName");
+        Log.d("___", "onCreate: " + userName + " " + roomName);
 
         try {
             socket = IO.socket("https://sanchitroomchat.azurewebsites.net/");
@@ -107,7 +103,7 @@ public class RoomChatActivity extends AppCompatActivity {
     private Emitter.Listener onConnect = new Emitter.Listener() {
         @Override
         public void call(Object... args) {
-            InitialData data = new InitialData(username, roomname);
+            InitialData data = new InitialData(userName, roomName);
             String jsonData = gson.toJson(data);
             Log.d("___", "call: 20" + jsonData);
             socket.emit("subscribe", jsonData);
@@ -119,18 +115,18 @@ public class RoomChatActivity extends AppCompatActivity {
         public void call(Object... args) {
             String name = args[0].toString();
             Log.d("___", "call: name" + name);
-            Message chat = new Message(name,roomname, "", USER_JOIN);
+            Message chat = new Message(name, roomName, "", USER_JOIN);
             addToRecyclerView(chat);
         }
     };
 
     public void sendMessage(){
         String content = contentText.getText().toString();
-        SendMessage sendMessage = new SendMessage(username, roomname, content);
+        SendMessage sendMessage = new SendMessage(userName, roomName, content);
         String jsonData = gson.toJson(sendMessage);
         socket.emit("newMessage", jsonData);
 
-        Message message = new Message(username, roomname, content, CHAT_MINE);
+        Message message = new Message(userName, roomName, content, CHAT_MINE);
         addToRecyclerView(message);
 
     }
@@ -150,7 +146,7 @@ public class RoomChatActivity extends AppCompatActivity {
     @Override
     protected void onDestroy() {
         super.onDestroy();
-        InitialData data = new InitialData(username, roomname);
+        InitialData data = new InitialData(userName, roomName);
         String jsonData = gson.toJson(data);
         socket.emit("unsubscribe", jsonData);
         socket.disconnect();

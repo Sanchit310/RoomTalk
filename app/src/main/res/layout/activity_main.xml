@@ -1,29 +1,83 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
+    android:background="#2D343E"
     tools:context=".MainActivity">
+
+    <TextView
+        android:id="@+id/textView"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="168dp"
+        android:text="Login"
+        android:textColor="#ffffff"
+        android:textSize="32sp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
 
     <EditText
         android:id="@+id/userName"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_margin="16dp"/>
+        android:layout_height="55dp"
+        android:layout_marginLeft="44dp"
+        android:layout_marginTop="52dp"
+        android:layout_marginRight="44dp"
+        android:background="@drawable/edittext_backgroud"
+        android:hint="Enter your username"
+        android:paddingLeft="16dp"
+        android:textColorHint="#5A6D75"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/textView" />
 
     <EditText
         android:id="@+id/roomName"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_margin="16dp"/>
+        android:layout_height="55dp"
+        android:layout_marginLeft="44dp"
+        android:layout_marginTop="32dp"
+        android:layout_marginRight="44dp"
+        android:background="@drawable/edittext_backgroud"
+        android:hint="Enter room name"
+        android:paddingLeft="16dp"
+        android:textColorHint="#5A6D75"
+        app:layout_constraintEnd_toEndOf="@+id/userName"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toStartOf="@+id/userName"
+        app:layout_constraintTop_toBottomOf="@+id/userName" />
 
-    <Button
+    <androidx.cardview.widget.CardView
         android:id="@+id/enterButton"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_margin="16sp"
-        android:text = "Enter chat"/>
+        android:layout_width="wrap_content"
+        android:layout_height="55dp"
+        android:paddingLeft="52dp"
+        android:paddingRight="52dp"
+        android:text="Enter chat"
+        app:cardBackgroundColor="#FFAC41"
+        app:cardCornerRadius="8dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="@+id/roomName"
+        app:layout_constraintStart_toStartOf="@+id/roomName"
+        app:layout_constraintTop_toBottomOf="@+id/roomName"
+        app:layout_constraintVertical_bias="0.182">
 
-</LinearLayout>
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:layout_marginLeft="44dp"
+            android:layout_marginRight="44dp"
+            android:text="Join"
+            android:textColor="#f1ffff"
+            android:textSize="20dp" />
+
+
+    </androidx.cardview.widget.CardView>
+
+
+</androidx.constraintlayout.widget.ConstraintLayout>
