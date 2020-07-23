@@ -5,10 +5,12 @@ public class SendMessage {
     private String userName;
     private String roomName;
     private String messageContent;
+    private Boolean isImage;
 
-    public SendMessage(String userName, String roomName, String msgContent) {
+    public SendMessage(String userName, String roomName, Boolean isImage, String msgContent) {
         this.userName = userName;
         this.roomName = roomName;
+        this.isImage = isImage;
         this.messageContent = msgContent;
     }
 

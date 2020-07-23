@@ -86,7 +86,7 @@ public class RoomChatActivity extends AppCompatActivity {
         @Override
         public void call(Object... args) {
             String leftUserName =  args[0].toString();
-            Message chat =  new Message(leftUserName + " left", "", "", USER_LEAVE);
+            Message chat =  new Message(leftUserName + " left", "", "",null, USER_LEAVE);
             addToRecyclerView(chat);
         }
     };
@@ -97,6 +97,7 @@ public class RoomChatActivity extends AppCompatActivity {
             Log.d("___", "call: args" + args[0].toString());
 
             Message chat = gson.fromJson(args[0].toString(), Message.class);
+            Log.d("___", "call: " + chat.isImage());
             chat.setViewType(CHAT_PARTNER);
             addToRecyclerView(chat);
         }
@@ -117,18 +118,18 @@ public class RoomChatActivity extends AppCompatActivity {
         public void call(Object... args) {
             String name = args[0].toString();
             Log.d("___", "call: name" + name);
-            Message chat = new Message(name + " joined", roomName, "", USER_JOIN);
+            Message chat = new Message(name + " joined", roomName, "", null, USER_JOIN);
             addToRecyclerView(chat);
         }
     };
 
     public void sendMessage(){
         String content = contentText.getText().toString();
-        SendMessage sendMessage = new SendMessage(userName, roomName, content);
+        SendMessage sendMessage = new SendMessage(userName, roomName, false, content);
         String jsonData = gson.toJson(sendMessage);
         socket.emit("newMessage", jsonData);
-
-        Message message = new Message(userName, roomName, content, CHAT_MINE);
+        Log.d("___", "sendMessage: ." + jsonData);
+        Message message = new Message(userName, roomName, content,false, CHAT_MINE);
         addToRecyclerView(message);
 
     }

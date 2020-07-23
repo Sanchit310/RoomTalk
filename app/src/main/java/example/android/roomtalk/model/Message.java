@@ -5,13 +5,23 @@ public class Message {
     private String userName;
     private String roomName;
     private String messageContent;
+    private Boolean isImage;
     private int viewType;
 
-    public Message(String userName, String roomName, String msgContent, int viewType) {
+    public Message(String userName, String roomName, String msgContent, Boolean isImage, int viewType) {
         this.userName = userName;
         this.roomName = roomName;
         this.messageContent = msgContent;
+        this.isImage = isImage;
         this.viewType = viewType;
+    }
+
+    public Boolean isImage() {
+        return isImage;
+    }
+
+    public void setImage(Boolean image) {
+        isImage = image;
     }
 
     public String getUserName() {
