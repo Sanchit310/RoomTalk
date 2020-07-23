@@ -1,6 +1,9 @@
 package example.android.roomtalk;
 
 import android.content.Context;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
+import android.util.Base64;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -82,6 +85,11 @@ public class ChatAdapter extends RecyclerView.Adapter {
                 break;
 
         }
+    }
+
+    public Bitmap getBitmapFromString(String image){
+        byte[] bytes = Base64.decode(image, Base64.DEFAULT);
+        return BitmapFactory.decodeByteArray(bytes, 0, bytes.length);
     }
 
     @Override

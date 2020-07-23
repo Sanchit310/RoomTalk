@@ -1,5 +1,6 @@
 package example.android.roomtalk;
 
+import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.cardview.widget.CardView;
 import androidx.recyclerview.widget.LinearLayoutManager;
@@ -8,10 +9,15 @@ import example.android.roomtalk.model.InitialData;
 import example.android.roomtalk.model.Message;
 import example.android.roomtalk.model.SendMessage;
 
+import android.content.Intent;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.os.Bundle;
+import android.util.Base64;
 import android.util.Log;
 import android.view.View;
 import android.widget.EditText;
+import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -21,6 +27,9 @@ import com.github.nkzawa.socketio.client.IO;
 import com.github.nkzawa.socketio.client.Socket;
 import com.google.gson.Gson;
 
+import java.io.ByteArrayOutputStream;
+import java.io.FileNotFoundException;
+import java.io.InputStream;
 import java.net.URISyntaxException;
 import java.util.ArrayList;
 import java.util.List;
@@ -31,6 +40,8 @@ public class RoomChatActivity extends AppCompatActivity {
     public static final int  USER_JOIN = 2;
     public static final int  USER_LEAVE = 3;
 
+    public static final int IMAGE_REQUEST = 101;
+
     Socket socket;
     String userName, roomName;
     Gson gson = new Gson();
@@ -39,6 +50,7 @@ public class RoomChatActivity extends AppCompatActivity {
     ChatAdapter chatAdapter;
     EditText contentText;
     TextView sendButton;
+    ImageButton sendImageBtn;
 
 
     @Override
@@ -49,6 +61,16 @@ public class RoomChatActivity extends AppCompatActivity {
         contentText = findViewById(R.id.editText);
         recyclerView = findViewById(R.id.recyclerView);
         sendButton = findViewById(R.id.send);
+        sendImageBtn = findViewById(R.id.imageButton);
+
+        sendImageBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(Intent.ACTION_GET_CONTENT);
+                intent.setType("image/*");
+                startActivityForResult(intent, IMAGE_REQUEST);
+            }
+        });
 
         sendButton.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -80,6 +102,30 @@ public class RoomChatActivity extends AppCompatActivity {
         socket.on("updateChat", onUpdateChat);
         socket.on("userLeftChatRoom", onUserLeft);
 
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+
+        if( requestCode == IMAGE_REQUEST && resultCode == RESULT_OK){
+            try {
+                InputStream inputStream = getContentResolver().openInputStream(data.getData());
+                Bitmap image = BitmapFactory.decodeStream(inputStream);
+                sendImage(image);
+            } catch (FileNotFoundException e) {
+                e.printStackTrace();
+            }
+
+
+        }
+    }
+
+    private void sendImage(Bitmap image) {
+        ByteArrayOutputStream os = new ByteArrayOutputStream();
+        image.compress(Bitmap.CompressFormat.JPEG, 50, os);
+
+        String base64String = Base64.encodeToString(os.toByteArray(), Base64.DEFAULT);
     }
 
     private Emitter.Listener onUserLeft = new Emitter.Listener() {
