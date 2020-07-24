@@ -28,8 +28,18 @@ public class ChatAdapter extends RecyclerView.Adapter {
     public static final int  IMAGE_SENT = 4;
     public static final int  IMAGE_RECEIVED = 5;
 
+    OnItemClickListener mListener;
+
     List<Message> messageList;
     Context context;
+
+    public interface OnItemClickListener{
+        public void onImageClicked(int position);
+    }
+
+    public void setOnItemClickListener(OnItemClickListener onItemClickListener){
+        mListener = onItemClickListener;
+    }
 
     public ChatAdapter(List<Message> messageList, Context context) {
         this.messageList = messageList;
@@ -58,11 +68,11 @@ public class ChatAdapter extends RecyclerView.Adapter {
             case 4:
                 view = LayoutInflater.from(parent.getContext()).inflate(R.layout.send_image_layout, parent, false);
                 Log.d("TAG", "onCreateViewHolder: ");
-                return new ImageSendveViewHolder(view);
+                return new ImageSendViewHolder(view);
             case 5:
                 view = LayoutInflater.from(parent.getContext()).inflate(R.layout.recevied_image_layout, parent, false);
                 Log.d("TAG", "onCreateViewHolder: ");
-                return new ImageReceviedViewHolder(view);
+                return new ImageReceviedViewHolder(view, mListener);
 
         }
         return null;
@@ -95,7 +105,7 @@ public class ChatAdapter extends RecyclerView.Adapter {
                 chatLeaveViewHolder.text.setText(userName);
                 break;
             case 4:
-                ImageSendveViewHolder imageSendveViewHolder = (ImageSendveViewHolder) holder;
+                ImageSendViewHolder imageSendveViewHolder = (ImageSendViewHolder) holder;
                 Bitmap bitmap = getBitmapFromString(msgContent);
                 imageSendveViewHolder.sentImage.setImageBitmap(bitmap);
                 break;
@@ -166,11 +176,11 @@ public class ChatAdapter extends RecyclerView.Adapter {
         }
     }
 
-    public static class ImageSendveViewHolder extends RecyclerView.ViewHolder{
+    public static class ImageSendViewHolder extends RecyclerView.ViewHolder{
 
         ImageView sentImage;
 
-        public ImageSendveViewHolder(@NonNull View itemView) {
+        public ImageSendViewHolder(@NonNull View itemView) {
             super(itemView);
 
             sentImage = itemView.findViewById(R.id.sentImage);
@@ -181,10 +191,22 @@ public class ChatAdapter extends RecyclerView.Adapter {
 
         ImageView receivedImage;
 
-        public ImageReceviedViewHolder(@NonNull View itemView) {
+        public ImageReceviedViewHolder(@NonNull View itemView, final OnItemClickListener listener) {
             super(itemView);
 
             receivedImage = itemView.findViewById(R.id.receviedImage);
+
+            itemView.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    if (listener != null){
+                        int position = getAdapterPosition();
+                        if (position != RecyclerView.NO_POSITION){
+                            listener.onImageClicked(position);
+                        }
+                    }
+                }
+            });
         }
     }
 

@@ -65,6 +65,8 @@ public class RoomChatActivity extends AppCompatActivity {
         sendButton = findViewById(R.id.send);
         sendImageBtn = findViewById(R.id.imageButton);
 
+
+
         sendImageBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -84,6 +86,12 @@ public class RoomChatActivity extends AppCompatActivity {
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
         chatAdapter = new ChatAdapter(messageList, this);
         recyclerView.setAdapter(chatAdapter);
+        chatAdapter.setOnItemClickListener(new ChatAdapter.OnItemClickListener() {
+            @Override
+            public void onImageClicked(int position) {
+                Toast.makeText(RoomChatActivity.this, "Clicked", Toast.LENGTH_SHORT).show();
+            }
+        });
 
 
         userName = getIntent().getStringExtra("userName");
