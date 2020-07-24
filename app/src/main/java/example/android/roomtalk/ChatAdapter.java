@@ -8,6 +8,7 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import java.util.ArrayList;
@@ -24,6 +25,8 @@ public class ChatAdapter extends RecyclerView.Adapter {
     public static final int  CHAT_PARTNER = 1;
     public static final int  USER_JOIN = 2;
     public static final int  USER_LEAVE = 3;
+    public static final int  IMAGE_SENT = 4;
+    public static final int  IMAGE_RECEIVED = 5;
 
     List<Message> messageList;
     Context context;
@@ -52,6 +55,14 @@ public class ChatAdapter extends RecyclerView.Adapter {
                 view = LayoutInflater.from(parent.getContext()).inflate(R.layout.join_leave_item_layout, parent, false);
                 Log.d("TAG", "onCreateViewHolder: ");
                 return new ChatLeaveViewHolder(view);
+            case 4:
+                view = LayoutInflater.from(parent.getContext()).inflate(R.layout.send_image_layout, parent, false);
+                Log.d("TAG", "onCreateViewHolder: ");
+                return new ImageSendveViewHolder(view);
+            case 5:
+                view = LayoutInflater.from(parent.getContext()).inflate(R.layout.recevied_image_layout, parent, false);
+                Log.d("TAG", "onCreateViewHolder: ");
+                return new ImageReceviedViewHolder(view);
 
         }
         return null;
@@ -82,6 +93,16 @@ public class ChatAdapter extends RecyclerView.Adapter {
             case 3:
                 ChatLeaveViewHolder chatLeaveViewHolder = (ChatLeaveViewHolder) holder;
                 chatLeaveViewHolder.text.setText(userName);
+                break;
+            case 4:
+                ImageSendveViewHolder imageSendveViewHolder = (ImageSendveViewHolder) holder;
+                Bitmap bitmap = getBitmapFromString(msgContent);
+                imageSendveViewHolder.sentImage.setImageBitmap(bitmap);
+                break;
+            case 5:
+                ImageReceviedViewHolder imageReceviedViewHolder = (ImageReceviedViewHolder) holder;
+                Bitmap bitmap1 = getBitmapFromString(msgContent);
+                imageReceviedViewHolder.receivedImage.setImageBitmap(bitmap1);
                 break;
 
         }
@@ -142,6 +163,28 @@ public class ChatAdapter extends RecyclerView.Adapter {
             super(itemView);
 
             text = itemView.findViewById(R.id.text);
+        }
+    }
+
+    public static class ImageSendveViewHolder extends RecyclerView.ViewHolder{
+
+        ImageView sentImage;
+
+        public ImageSendveViewHolder(@NonNull View itemView) {
+            super(itemView);
+
+            sentImage = itemView.findViewById(R.id.sentImage);
+        }
+    }
+
+    public static class ImageReceviedViewHolder extends RecyclerView.ViewHolder{
+
+        ImageView receivedImage;
+
+        public ImageReceviedViewHolder(@NonNull View itemView) {
+            super(itemView);
+
+            receivedImage = itemView.findViewById(R.id.receviedImage);
         }
     }
 
