@@ -39,6 +39,8 @@ public class RoomChatActivity extends AppCompatActivity {
     public static final int  CHAT_PARTNER = 1;
     public static final int  USER_JOIN = 2;
     public static final int  USER_LEAVE = 3;
+    public static final int  IMAGE_SENT = 4;
+    public static final int  IMAGE_RECEIVED = 5;
 
     public static final int IMAGE_REQUEST = 101;
 
@@ -126,6 +128,14 @@ public class RoomChatActivity extends AppCompatActivity {
         image.compress(Bitmap.CompressFormat.JPEG, 50, os);
 
         String base64String = Base64.encodeToString(os.toByteArray(), Base64.DEFAULT);
+        SendMessage sendMessage = new SendMessage(userName, roomName, true, base64String);
+        String jsonString = gson.toJson(sendMessage);
+        Log.d("___", "sendImage: " + jsonString);
+        socket.emit("newMessage",jsonString);
+
+        Message chat = new Message(userName, roomName, base64String, true, IMAGE_SENT);
+        addToRecyclerView(chat);
+
     }
 
     private Emitter.Listener onUserLeft = new Emitter.Listener() {
@@ -143,9 +153,14 @@ public class RoomChatActivity extends AppCompatActivity {
             Log.d("___", "call: args" + args[0].toString());
 
             Message chat = gson.fromJson(args[0].toString(), Message.class);
-            Log.d("___", "call: " + chat.isImage());
-            chat.setViewType(CHAT_PARTNER);
-            addToRecyclerView(chat);
+            if (!chat.isImage()){
+                chat.setViewType(CHAT_PARTNER);
+                addToRecyclerView(chat);
+            }else {
+                chat.setViewType(IMAGE_RECEIVED);
+                addToRecyclerView(chat);
+            }
+
         }
     };
 
