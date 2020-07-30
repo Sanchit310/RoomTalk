@@ -3,16 +3,22 @@ package example.android.roomtalk;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.cardview.widget.CardView;
+import androidx.core.app.ActivityCompat;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 import example.android.roomtalk.model.InitialData;
 import example.android.roomtalk.model.Message;
 import example.android.roomtalk.model.SendMessage;
 
+import android.Manifest;
 import android.content.Intent;
+import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.net.Uri;
+import android.os.Build;
 import android.os.Bundle;
+import android.os.Environment;
 import android.util.Base64;
 import android.util.Log;
 import android.view.View;
@@ -28,11 +34,16 @@ import com.github.nkzawa.socketio.client.Socket;
 import com.google.gson.Gson;
 
 import java.io.ByteArrayOutputStream;
+import java.io.File;
 import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
+import java.io.IOException;
 import java.io.InputStream;
+import java.io.OutputStream;
 import java.net.URISyntaxException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Random;
 
 public class RoomChatActivity extends AppCompatActivity {
     public static final int CHAT_MINE = 0;
@@ -53,6 +64,7 @@ public class RoomChatActivity extends AppCompatActivity {
     EditText contentText;
     TextView sendButton;
     ImageButton sendImageBtn;
+    OutputStream outputStream;
 
 
     @Override
@@ -89,7 +101,37 @@ public class RoomChatActivity extends AppCompatActivity {
         chatAdapter.setOnItemClickListener(new ChatAdapter.OnItemClickListener() {
             @Override
             public void onImageClicked(int position) {
-                Toast.makeText(RoomChatActivity.this, "Clicked", Toast.LENGTH_SHORT).show();
+                if (ActivityCompat.checkSelfPermission(RoomChatActivity.this, Manifest.permission.WRITE_EXTERNAL_STORAGE)!= PackageManager.PERMISSION_GRANTED)
+                {
+                    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+                        requestPermissions(new String[] {Manifest.permission.WRITE_EXTERNAL_STORAGE},1);
+                    }
+
+                }else {
+                    Message message = messageList.get(position);
+                    String image =  message.getMsgContent();
+                    Bitmap bitmap = chatAdapter.getBitmapFromString(image);
+
+                    File filePath = Environment.getExternalStorageDirectory();
+                    File dir =  new File(filePath.getAbsolutePath() + "/Demo");
+                    dir.mkdir();
+                    File file =  new File(dir, System.currentTimeMillis() + ".jpg");
+                    try {
+                        outputStream = new FileOutputStream(file);
+                        bitmap.compress(Bitmap.CompressFormat.JPEG, 100, outputStream);
+                        outputStream.flush();
+                        outputStream.close();
+                        Intent intent = new Intent(Intent.ACTION_MEDIA_SCANNER_SCAN_FILE);
+                        intent.setData(Uri.fromFile(file));
+                        sendBroadcast(intent);
+                    } catch (IOException e) {
+                        e.printStackTrace();
+                        Log.e("___", "onImageClicked: ", e.getCause());
+                    }
+
+                    Toast.makeText(RoomChatActivity.this, "Image Saved", Toast.LENGTH_SHORT).show();
+                }
+
             }
         });
 
