@@ -8,6 +8,7 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.TextView;
 
@@ -113,6 +114,7 @@ public class ChatAdapter extends RecyclerView.Adapter {
                 ImageReceviedViewHolder imageReceviedViewHolder = (ImageReceviedViewHolder) holder;
                 Bitmap bitmap1 = getBitmapFromString(msgContent);
                 imageReceviedViewHolder.receivedImage.setImageBitmap(bitmap1);
+                imageReceviedViewHolder.userName.setText(userName);
                 break;
 
         }
@@ -189,14 +191,18 @@ public class ChatAdapter extends RecyclerView.Adapter {
 
     public static class ImageReceviedViewHolder extends RecyclerView.ViewHolder{
 
+        ImageButton downloadBtn;
         ImageView receivedImage;
+        TextView userName;
 
         public ImageReceviedViewHolder(@NonNull View itemView, final OnItemClickListener listener) {
             super(itemView);
 
             receivedImage = itemView.findViewById(R.id.receviedImage);
+            userName = itemView.findViewById(R.id.usernameImage);
+            downloadBtn = itemView.findViewById(R.id.downloadBtn);
 
-            itemView.setOnClickListener(new View.OnClickListener() {
+            downloadBtn.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
                     if (listener != null){

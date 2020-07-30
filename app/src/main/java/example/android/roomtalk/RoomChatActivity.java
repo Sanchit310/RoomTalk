@@ -113,7 +113,7 @@ public class RoomChatActivity extends AppCompatActivity {
                     Bitmap bitmap = chatAdapter.getBitmapFromString(image);
 
                     File filePath = Environment.getExternalStorageDirectory();
-                    File dir =  new File(filePath.getAbsolutePath() + "/Demo");
+                    File dir =  new File(filePath.getAbsolutePath() + "/RoomTalk");
                     dir.mkdir();
                     File file =  new File(dir, System.currentTimeMillis() + ".jpg");
                     try {
