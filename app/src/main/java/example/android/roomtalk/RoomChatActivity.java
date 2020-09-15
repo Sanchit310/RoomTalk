@@ -242,6 +242,7 @@ public class RoomChatActivity extends AppCompatActivity {
         Log.d("___", "sendMessage: ." + jsonData);
         Message message = new Message(userName, roomName, content,false, CHAT_MINE);
         addToRecyclerView(message);
+        contentText.setText("");
 
     }
 
@@ -251,7 +252,7 @@ public class RoomChatActivity extends AppCompatActivity {
             public void run() {
                 messageList.add(message);
                 chatAdapter.notifyItemInserted(messageList.size());
-                contentText.setText("");
+
                 recyclerView.scrollToPosition(messageList.size() - 1);
             }
         });

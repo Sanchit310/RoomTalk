@@ -53,24 +53,24 @@ public class ChatAdapter extends RecyclerView.Adapter {
         View view;
         switch (viewType){
 
-            case 0:
+            case CHAT_MINE:
                 view = LayoutInflater.from(parent.getContext()).inflate(R.layout.my_msg_item_layout, parent, false);
                 return new ChatMyViewHolder(view);
-            case 1:
+            case CHAT_PARTNER:
                 view = LayoutInflater.from(parent.getContext()).inflate(R.layout.other_msg_layout_item, parent, false);
                 return new ChatOtViewHolder(view);
-            case 2:
+            case USER_JOIN:
                 view = LayoutInflater.from(parent.getContext()).inflate(R.layout.join_leave_item_layout, parent, false);
                 return new ChatJoinViewHolder(view);
-            case 3:
+            case USER_LEAVE:
                 view = LayoutInflater.from(parent.getContext()).inflate(R.layout.join_leave_item_layout, parent, false);
                 Log.d("TAG", "onCreateViewHolder: ");
                 return new ChatLeaveViewHolder(view);
-            case 4:
+            case IMAGE_SENT:
                 view = LayoutInflater.from(parent.getContext()).inflate(R.layout.send_image_layout, parent, false);
                 Log.d("TAG", "onCreateViewHolder: ");
                 return new ImageSendViewHolder(view);
-            case 5:
+            case IMAGE_RECEIVED:
                 view = LayoutInflater.from(parent.getContext()).inflate(R.layout.recevied_image_layout, parent, false);
                 Log.d("TAG", "onCreateViewHolder: ");
                 return new ImageReceviedViewHolder(view, mListener);
@@ -88,29 +88,29 @@ public class ChatAdapter extends RecyclerView.Adapter {
 
         switch (viewType){
 
-            case 0:
+            case CHAT_MINE:
                 ChatMyViewHolder chatMyViewHolder = (ChatMyViewHolder) holder;
                chatMyViewHolder.message.setText(msgContent);
                break;
-            case 1:
+            case CHAT_PARTNER:
                 ChatOtViewHolder chatOtViewHolder = (ChatOtViewHolder) holder;
                 chatOtViewHolder.userName.setText(userName);
                 chatOtViewHolder.message.setText(msgContent);
                 break;
-            case 2:
+            case USER_JOIN:
                 ChatJoinViewHolder chatJoinViewHolder = (ChatJoinViewHolder) holder;
                 chatJoinViewHolder.text.setText(userName);
                 break;
-            case 3:
+            case USER_LEAVE:
                 ChatLeaveViewHolder chatLeaveViewHolder = (ChatLeaveViewHolder) holder;
                 chatLeaveViewHolder.text.setText(userName);
                 break;
-            case 4:
+            case IMAGE_SENT:
                 ImageSendViewHolder imageSendveViewHolder = (ImageSendViewHolder) holder;
                 Bitmap bitmap = getBitmapFromString(msgContent);
                 imageSendveViewHolder.sentImage.setImageBitmap(bitmap);
                 break;
-            case 5:
+            case IMAGE_RECEIVED:
                 ImageReceviedViewHolder imageReceviedViewHolder = (ImageReceviedViewHolder) holder;
                 Bitmap bitmap1 = getBitmapFromString(msgContent);
                 imageReceviedViewHolder.receivedImage.setImageBitmap(bitmap1);
