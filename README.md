@@ -1,10 +1,11 @@
 # RoomTalk
 A simple chatting app where users can chat with each other by creating room.
 
-- Real-time chatting app built using Socket.io.
-- User can create a room and other users can enter in chat using room name/id.
-- Users can send images and download the images from the chat
-- Message is show when a user enters/leaves the chat.
+= A real-time chatting app built using Socket.io.
+- Users can create a room and other users can enter in chat using room name/id.
+- Users can send images and download the images from the chat.
+- Tells when a user enters/leaves the chat.
+
 
 ## Screenshots
 
